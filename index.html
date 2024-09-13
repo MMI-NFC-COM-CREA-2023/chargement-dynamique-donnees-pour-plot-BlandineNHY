@@ -29,5 +29,31 @@
         <br>
         <p>Le deuxième graphique montre l'évolution des populations de manchots sur les dix dernières années. Une tendance à la baisse est observée pour certaines espèces, probablement en raison du changement climatique et de la perte d'habitats. D'autres espèces, cependant, semblent avoir maintenu des populations stables, voire en légère augmentation, grâce à des efforts de conservation.</p>
     </section>
+
+    <script type="module">
+        import * as Plot from "https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6/+esm";
+
+        async function drawPlots() {
+            const penguinResponse = await fetch("Penguin.json");
+            const penguin = await penguinResponse.json();
+            
+            const plot1 = Plot.dot(penguin, {
+                x: "body_mass_g", 
+                y: "sex", 
+                stroke: "island"
+            }).plot();
+            document.querySelector("#graph1").append(plot1);
+
+            const plot2 = Plot.dot(penguin, {
+                x: "flipper_length_mm", 
+                y: "sex", 
+                stroke: "species"
+            }).plot();
+            document.querySelector("#graph2").append(plot2);
+        }
+
+        drawPlots();
+    </script>
+
 </body>
 </html>
