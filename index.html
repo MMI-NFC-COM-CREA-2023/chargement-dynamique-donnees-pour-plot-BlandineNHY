@@ -36,12 +36,14 @@
         </section>
     </main>
 
+    <!-- Point gris qui suit le curseur -->
+    <div id="cursor-dot"></div>
+
     <footer>
         <h3>Autres Ressources</h3>
         <p>Pour en savoir plus sur les manchots et la biologie marine, consultez les liens suivants :</p>
         <a href="https://www.nhm.ac.uk/research-curation/research/projects/penguin-watch" target="_blank">Penguin Watch</a>
         <a href="https://www.penguinscience.com" target="_blank">Penguin Science</a>
-        <a href="https://www.oceanconservancy.org" target="_blank">Ocean Conservancy</a>
     </footer>
 
     <script>
@@ -56,15 +58,15 @@
                 const Plot = window.Plot;
 
                 const plot1 = Plot.dot(penguin, {
-                    x: "body_mass_g", 
-                    y: "sex", 
+                    x: "sex", 
+                    y: "body_mass_g", 
                     stroke: "island"
                 }).plot();
                 document.querySelector("#graph1-container").append(plot1);
 
                 const plot2 = Plot.dot(penguin, {
-                    x: "culmen_length_mm", 
-                    y: "flipper_length_mm", 
+                    x: "flipper_length_mm", 
+                    y: "culmen_length_mm", 
                     stroke: "species"
                 }).plot();
                 document.querySelector("#graph2-container").append(plot2);
@@ -75,6 +77,13 @@
         }
 
         drawPlots();
+
+        // Test Curseur
+        document.addEventListener('mousemove', (e) => {
+            const cursorDot = document.getElementById('cursor-dot');
+            cursorDot.style.left = e.pageX + 'px';
+            cursorDot.style.top = e.pageY + 'px';
+        });
     </script>
 </body>
 </html>
