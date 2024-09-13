@@ -4,33 +4,45 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Page avec Graphiques</title>
+    <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
     <script src="https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6/dist/plot.umd.js"></script>
 </head>
 
 <body>
-    <h1>My Penguin Page</h1>
-    
-    <nav>
-        <a href="#graph1">Graphique 1</a>
-        <a href="#graph2">Graphique 2</a>
-    </nav>
+    <header>
+        <h1>My Penguin Page</h1>
+        <nav class="navbar">
+            <ul>
+                <li><a href="#graph1">Graphique 1</a></li>
+                <li><a href="#graph2">Graphique 2</a></li>
+            </ul>
+        </nav>
+    </header>
 
-    <!-- Section une -->
-    <section id="1">
-        <h2>Graphique 1</h2>
-        <div id="graph1"></div>
-        <br>
-        <p>Ce premier graphique présente la variation de la taille du corps des manchots en fonction de leur âge. Il est intéressant de noter que, bien que tous les manchots grandissent avec l'âge, certaines espèces atteignent leur taille adulte plus rapidement que d'autres. Cela pourrait être lié à des facteurs environnementaux ou à des stratégies de survie spécifiques à chaque espèce.</p>
-    </section>
+    <main>
+        <!-- Section une -->
+        <section id="graph1" class="graph-section">
+            <h2>Graphique 1</h2>
+            <div class="graph-container" id="graph1-container"></div>
+            <p>Ce premier graphique présente la masse corporelle des manchots en fonction de leur sexe. Vous pourrez observer des différences de masse corporelle entre les mâles et les femelles, ce qui pourrait être lié à des variations biologiques ou écologiques.</p>
+        </section>
 
-    <!-- Section deux -->
-    <section id="2">
-        <h2>Graphique 2</h2>
-        <div id="graph2"></div>
-        <br>
-        <p>Le deuxième graphique montre l'évolution des populations de manchots sur les dix dernières années. Une tendance à la baisse est observée pour certaines espèces, probablement en raison du changement climatique et de la perte d'habitats. D'autres espèces, cependant, semblent avoir maintenu des populations stables, voire en légère augmentation, grâce à des efforts de conservation.</p>
-    </section>
+        <!-- Section deux -->
+        <section id="graph2" class="graph-section">
+            <h2>Graphique 2</h2>
+            <div class="graph-container" id="graph2-container"></div>
+            <p>Le deuxième graphique montre la relation entre la longueur du bec et la longueur des nageoires des manchots. Cette relation peut fournir des indices sur les adaptations physiques des manchots aux différents environnements dans lesquels ils évoluent.</p>
+        </section>
+    </main>
+
+    <footer>
+        <h3>Autres Ressources</h3>
+        <p>Pour en savoir plus sur les manchots et la biologie marine, consultez les liens suivants :</p>
+        <a href="https://www.nhm.ac.uk/research-curation/research/projects/penguin-watch" target="_blank">Penguin Watch</a>
+        <a href="https://www.penguinscience.com" target="_blank">Penguin Science</a>
+        <a href="https://www.oceanconservancy.org" target="_blank">Ocean Conservancy</a>
+    </footer>
 
     <script>
         async function drawPlots() {
@@ -41,21 +53,21 @@
                 }
                 const penguin = await penguinResponse.json();
                 
-                const Plot = window.Plot; // Utiliser Plot depuis l'objet global
+                const Plot = window.Plot;
 
                 const plot1 = Plot.dot(penguin, {
-                    x: "sex", 
-                    y: "body_mass_g", 
+                    x: "body_mass_g", 
+                    y: "sex", 
                     stroke: "island"
                 }).plot();
-                document.querySelector("#graph1").append(plot1);
+                document.querySelector("#graph1-container").append(plot1);
 
                 const plot2 = Plot.dot(penguin, {
-                    x: "flipper_length_mm", 
-                    y: "culmen_length_mm", 
+                    x: "culmen_length_mm", 
+                    y: "flipper_length_mm", 
                     stroke: "species"
                 }).plot();
-                document.querySelector("#graph2").append(plot2);
+                document.querySelector("#graph2-container").append(plot2);
             } catch (error) {
                 console.error("Erreur lors du chargement des données ou de la création des graphiques:", error);
                 document.body.innerHTML += `<p>Erreur lors du chargement des données ou de la création des graphiques: ${error.message}</p>`;
@@ -64,6 +76,5 @@
 
         drawPlots();
     </script>
-
 </body>
 </html>
