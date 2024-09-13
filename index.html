@@ -36,7 +36,6 @@
         </section>
     </main>
 
-    <!-- Point gris qui suit le curseur -->
     <div id="cursor-dot"></div>
 
     <footer>
@@ -78,12 +77,33 @@
 
         drawPlots();
 
-        // Test Curseur
+        // JavaScript Test Curseur
+        const cursorDot = document.getElementById('cursor-dot');
+        let targetX = 0;
+        let targetY = 0;
+
         document.addEventListener('mousemove', (e) => {
-            const cursorDot = document.getElementById('cursor-dot');
-            cursorDot.style.left = e.pageX + 'px';
-            cursorDot.style.top = e.pageY + 'px';
+            targetX = e.pageX;
+            targetY = e.pageY;
         });
+
+        function updateCursor() {
+            const rect = cursorDot.getBoundingClientRect();
+            const dotX = rect.left + rect.width / 2;
+            const dotY = rect.top + rect.height / 2;
+
+            const dx = targetX - dotX;
+            const dy = targetY - dotY;
+
+            const speed = 0.1;
+
+            cursorDot.style.left = dotX + dx * speed + 'px';
+            cursorDot.style.top = dotY + dy * speed + 'px';
+
+            requestAnimationFrame(updateCursor);
+        }
+
+        updateCursor();
     </script>
 </body>
 </html>
