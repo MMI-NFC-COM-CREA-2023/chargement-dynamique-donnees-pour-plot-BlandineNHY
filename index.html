@@ -32,28 +32,34 @@
         <p>Le deuxième graphique montre l'évolution des populations de manchots sur les dix dernières années. Une tendance à la baisse est observée pour certaines espèces, probablement en raison du changement climatique et de la perte d'habitats. D'autres espèces, cependant, semblent avoir maintenu des populations stables, voire en légère augmentation, grâce à des efforts de conservation.</p>
     </section>
 
-    <script type="module">
-         import * as Plot from "https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6/+esm";
-
+    <script>
         async function drawPlots() {
-            const penguinResponse = await fetch("Penguin.json");
-            const penguin = await penguinResponse.json();
+            try {
+                const penguinResponse = await fetch("Penguin.json");
+                if (!penguinResponse.ok) {
+                    throw new Error(`HTTP error! Status: ${penguinResponse.status}`);
+                }
+                const penguin = await penguinResponse.json();
+                
+                const Plot = window.Plot; // Utiliser Plot depuis l'objet global
 
-            const Plot = window.Plot;
+                const plot1 = Plot.dot(penguin, {
+                    x: "sex", 
+                    y: "body_mass_g", 
+                    stroke: "island"
+                }).plot();
+                document.querySelector("#graph1").append(plot1);
 
-            const plot1 = Plot.dot(penguin, {
-                x: "sex", 
-                y: "body_mass_g", 
-                stroke: "island"
-            }).plot();
-            document.querySelector("#graph1").append(plot1);
-
-            const plot2 = Plot.dot(penguin, {
-                x: "flipper_length_mm", 
-                y: "culmen_length_mm", 
-                stroke: "species"
-            }).plot();
-            document.querySelector("#graph2").append(plot2);
+                const plot2 = Plot.dot(penguin, {
+                    x: "flipper_length_mm", 
+                    y: "culmen_length_mm", 
+                    stroke: "species"
+                }).plot();
+                document.querySelector("#graph2").append(plot2);
+            } catch (error) {
+                console.error("Erreur lors du chargement des données ou de la création des graphiques:", error);
+                document.body.innerHTML += `<p>Erreur lors du chargement des données ou de la création des graphiques: ${error.message}</p>`;
+            }
         }
 
         drawPlots();
