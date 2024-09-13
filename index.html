@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Page avec Graphiques</title>
+    <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6/dist/plot.umd.js"></script>
 </head>
 
 <body>
@@ -31,22 +33,24 @@
     </section>
 
     <script type="module">
-        import * as Plot from "https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6/+esm";
+         import * as Plot from "https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6/+esm";
 
         async function drawPlots() {
             const penguinResponse = await fetch("Penguin.json");
             const penguin = await penguinResponse.json();
-            
+
+            const Plot = window.Plot;
+
             const plot1 = Plot.dot(penguin, {
-                x: "body_mass_g", 
-                y: "sex", 
+                x: "sex", 
+                y: "body_mass_g", 
                 stroke: "island"
             }).plot();
             document.querySelector("#graph1").append(plot1);
 
             const plot2 = Plot.dot(penguin, {
                 x: "flipper_length_mm", 
-                y: "sex", 
+                y: "culmen_length_mm", 
                 stroke: "species"
             }).plot();
             document.querySelector("#graph2").append(plot2);
